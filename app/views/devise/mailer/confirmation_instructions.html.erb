@@ -1,0 +1,31 @@
+//登録／変更かを「unconfirmed_email」の有無で切り分けてメール送信させます。
+<p><%="#{@resource.name}さん" %></p>
+  <br>
+  <p>bookersをご利用いただきありがとうございます。</p>
+  <br>
+  <br>
+<% if @resource.try(:unconfirmed_email?) %> #true→email変更 false→会員登録
+  <p>以下のURLをクリックして、メールアドレス変更手続きを完了してください。</p>
+    <br>
+    <%= link_to "#{@resource.unconfirmed_email}", confirmation_url(@resource, confirmation_token: @token) %>
+    <br>
+    <br>
+    <p>このURLの有効期限は24時間です。</p>
+<% else %>
+  <br>
+  <p>会員登録が完了しました。</p>
+<br>
+<br>
+<p>Webページを開く</p>
+  <br>
+    http://localhost:3000
+  <br>
+  <p>※このメールは返信しても届きません。お問い合わせはアプリを起動して「お問い合わせ」からお願いいたします。</p>
+  <br>
+  <br>
+  <p>■ご登録の覚えがないのにこのメールが届いたという方
+  %br
+  ご迷惑をおかけし申し訳ありません。大変お手数ですが下記メールアドレスまでご連絡をお願いいたします。</p>
+  <br>
+  ******@****.jp
+  <% end %>

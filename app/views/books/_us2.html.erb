@@ -1,0 +1,20 @@
+<div class="container">
+<div class="row">
+<div class="col-xs-3">
+
+	<h1>User info</h1>
+		<table class="table">
+			<tr><%= attachment_image_tag book.user, :profile_image, size:"100x100", fallback: "no_iamge.jpg" %></tr>
+			<tr>
+				<th>name</th>
+				<th><%= (book.user).name %></th>
+			</tr>
+			<tr>
+				<th>introduction</th>
+				<th><%= (book.user).introduction %></th>
+			</tr>
+		</table>
+
+		<%= link_to edit_user_path(book.user), class:'btn btn-primary btn-block' do %>
+				<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+		<% end %>

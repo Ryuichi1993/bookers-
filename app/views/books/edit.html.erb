@@ -1,0 +1,61 @@
+<header class="navbar navbar-fixed-top w-100 navbar-inverse">
+	<div class="container fluid">
+        <nav class="nav navbar-nav navbar-left">
+			<span class=" h3 text-muted">Bookers</span>
+		</nav>
+			<nav>
+				<ul class="nav navbar-nav navbar-right">
+					<% if user_signed_in? %>
+					<li class="nav-item"><%= link_to user_path(current_user.id) do %>
+						<span class="glyphicon glyphicon-home" aria-hidden="true"> Home</span></li><% end %>
+					</li>
+					<li class="nav-item"><%= link_to users_path do %>
+						<span class="glyphicon glyphicon-user" aria-hidden="true"> Users</span></li><% end %>
+					<li class="nav-item"><%= link_to books_path do %>
+						<span class="glyphicon glyphicon-book" aria-hidden="true"> Books</span></li><% end %>
+					<li class="nav-item"><%= link_to destroy_user_session_path, method: :delete do %><span class="glyphicon glyphicon-log-out" aria-hidden="true"> logout</span></li><% end %>
+					<% else %>
+					<li class="nav-item"><%= link_to root_path do %>
+						<span class="glyphicon glyphicon-home" aria-hidden="true"> Home</span></li><% end %>
+					<li class="nav-item"><%= link_to home_about_path do %>
+						<span class="glyphicon glyphicon-link" aria-hidden="true"> About</span></li><% end %>
+					<li class="nav-item"><%= link_to new_user_registration_path do %><span class="glyphicon glyphicon-check" aria-hidden="true"> sign up</span></li><% end %>
+					<li class="nav-item"><%= link_to new_user_session_path do %>
+						<span class="glyphicon glyphicon-log-in" aria-hidden="true"> login</span></li><% end %>
+					<% end %>
+				</ul>
+			</nav>
+	</div>
+</header>
+<div class="container">
+	<div class="row">
+<div class="col-xs-6">
+
+<h1>Editing Books</h1>
+<%= form_for(@book) do |f| %>
+
+	<% if @book.errors.any? %>
+	<div class="alert-alert-warinig">
+		<p class="error-count"><%= @book.errors.full_messages.count %>errors prohibited this book from being saved:</p>
+		<ul>
+			<% @book.errors.full_messages.each do |message| %>
+				<li><%= message %></li>
+			<% end %>
+		</ul>
+	</div>
+
+    <% end %>
+	<p>Title</p>
+		<%= f.text_field :title %>
+	<p>Opinion</p>
+		<%= f.text_area :body %>
+
+		<%= f.submit 'Update Book' %>
+	<% end %>
+	<%= link_to "Show", book_path(@book.id) %>
+	<%= link_to "Back", books_path %>
+</div>
+</div>
+</div>
+
+	<%= render 'users/footer' %>

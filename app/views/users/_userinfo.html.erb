@@ -1,0 +1,23 @@
+<h2>New book</h2>
+		<%= form_for(book) do |f| %>
+			<% if book.errors.any? %>
+				<div class="alert-alert-warinig">
+					<p class="error-count"><%= book.errors.full_messages.count %>errors prohibited this book from being saved:</p>
+						<ul>
+							<% book.errors.full_messages.each do |message| %>
+							<li><%= message %></li>
+							<% end %>
+						</ul>
+				</div>
+		<% end %>
+		<%= f.label :title, "Title" %>
+<%= f.text_field :title, :size =>"35*35" %>
+<br>
+<br>
+
+<%= f.label :body, "Body" %>
+<%= f.text_area :body, :size =>"34*20" %>
+
+<%= f.submit :class=> "btn btn-primary btn-block" %>
+		<% end %>
+</div>

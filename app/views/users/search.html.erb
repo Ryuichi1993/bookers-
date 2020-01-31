@@ -1,0 +1,71 @@
+<%= render 'users/header', user: @user %>
+<%= render 'users/us', user: @user %>
+
+
+<%= render 'users/userinfo', book: @book %>
+
+<%= form_tag(search_user_path, :method => 'get') do %>
+    <%= select_tag(:option, options_for_select([["user", "1"],["book","2"]]))%>
+    <%= select_tag(:select, options_for_select([["完全一致","1"],["前方一致","2"],["後方一致","3"],["部分一致","4"]])) %>
+    <%= text_field_tag :search %>
+    <%= submit_tag 'Search' %>
+<% end %>
+<% if @user_or_book == "1"%>
+<div class="col-xs-9">
+    <h2>Users</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>image</th>
+                <th>name</th>
+                <th colspan="3"></th>
+            </tr>
+        </thead>
+
+        <% @userss.each do |user| %>
+        <tbody>
+            <tr>
+                <th><%= attachment_image_tag user, :profile_image, size:"40x40", fallback: "no_iamge.jpg" %></th>
+                <th><%= user.name %></th>
+                <th><%= link_to user_path(user) do %>
+                    <span class="text-muted">Show</span><% end %></th>
+                    <th><%= link_to "#{user.followers.count}人がフォローしています", user_path(user) %></th>
+                </tr>
+            </tbody>
+            <% end %>
+        </table>
+    </div>
+</div>
+</div>
+
+<% elsif @user_or_book == "2" %>
+<div class="col-xs-9">
+    <h1>Books</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th colspan="1"></th>
+                <th>Title</th>
+                <th>opinion</th>
+            </tr>
+        </thead>
+        <% @bookss.each do |book| %>
+        <tbody>
+            <tr>
+                <td><%= link_to user_path(book.user) do %>
+                    <%= attachment_image_tag book.user, :profile_image, size:"40x40", fallback: "no_iamge.jpg" %></td>
+                    <% end %>
+                    <td><%= link_to  book_path(book) do %>
+                        <i class="title"></i><%= book.title %></td>
+                        <% end %>
+                        <td><%= book.body %></td>
+                        <td><%= link_to "#{book.book_comments.count} コメント", book_path(book) %></td>
+                        <td><%= link_to "#{book.favorites.count} いいね", book_path(book) %></td>
+                    </tr>
+                </tbody>
+                <% end %>
+            </table>
+        </div>
+    </div>
+</div>
+<% end %>

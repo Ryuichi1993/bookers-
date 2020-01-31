@@ -1,0 +1,25 @@
+<h2>コメント一覧</h2>
+	<table class="table">
+		<tr>
+			<td colspan="1"></td>
+			<td>ユーザー名</td>
+			<td>コメント</td>
+			<td colspan= "4"></td>
+		</tr>
+		<% if comment.errors.any? %>
+		<%= comment.errors.full_messages %>
+		<% end %>
+		<% book.book_comments.each do |c| %>
+		<tr>
+			<td><%= attachment_image_tag c.user, :profile_image, size:"40x40",fallback: "no_iamge.jpg" %></td>
+			<td><%= c.user.name %></td>
+			<td><%= c.comment %></td>
+			<% if c.user == current_user %>
+			<td><%= link_to "Destroy", book_book_comments_path(book.id), method: :delete, date: {confirm:'Are you sure?'}, class:'btn btn-danger', remote: true %><% end %>
+			</td>
+		</tr>
+		<% end %>
+	</table>
+
+
+

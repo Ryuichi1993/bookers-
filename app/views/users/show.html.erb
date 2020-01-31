@@ -1,0 +1,136 @@
+
+<%= render 'users/header', user: @user %>
+<%= render 'users/us', user: @user %>
+<br>
+<%= render 'relationships/follow_button', user: @user %>
+<br>
+<% unless @user.id == current_user.id %>
+<% if @isRoom == true %>
+<%= link_to room_path(@roomId), class:'btn btn-primary btn-block' do %>チャットをする
+<% end %>
+<% else %>
+<%= form_for @room do |f| %>
+<%= fields_for @entry do |e| %>
+<%= e.hidden_field :user_id, :value => @user.id %>
+<% end %>
+<%= f.submit "チャットを始める", class: 'btn btn-primary btn-block' %>
+<% end %>
+<% end %>
+<% end %>
+<%= render 'users/userinfo', book: @book %>
+
+<tabele class="table">
+
+	<th>
+		<td>このユーザーは</td><br>
+		<td><%= link_to "#{@user.followings.count} 人をフォローしています" %></td>
+		<br>
+
+		<td><%= link_to "#{@user.followers.count} 人にフォローされています" %></td>
+	</th>
+</tabele>
+
+
+
+<div class="col-xs-9">
+	<h1>Books</h1>
+	<table class="table">
+		<thead>
+			<tr>
+				<th colspan="1"></th>
+				<th>Title</th>
+				<th>opinion</th>
+			</tr>
+		</thead>
+		<% @user.books.each do |book| %>
+		<tbody>
+			<tr>
+				<th>
+					<%= attachment_image_tag book.user, :profile_image, size:"40x40", fallback: "no_iamge.jpg" %></th>
+
+					<th><%= link_to book_path(book) do %>
+						<%= book.title %></th><% end %>
+						<th><%= book.body %></th>
+					</tr>
+				</tbody>
+				<% end %>
+			</table>
+
+
+			<div class="row">
+				<div class="col-xs-6">
+					<h3><%= @user.name %>をフォローしている人</h3>
+
+					<table class="table table-hover">
+						<thead>
+							<tr>
+								<td>ユーザ名</td>
+								<td>ユーザー画像</td>
+							</tr>
+						</thead>
+						<% @user.followers.each do |fer| %>
+						<tbody>
+							<tr>
+								<th><%= fer.name %></th>
+								<td><%= link_to user_path(fer) do %>
+									<%= attachment_image_tag fer, :profile_image, size:"40x40", fallback: "no_iamge.jpg" %><% end %></td>
+								</tr>
+							</tbody>
+							<% end %>
+						</table>
+					</div>
+					<div class="col-xs-6">
+						<h3><%= @user.name %>がフォローしている人</h3>
+						<table class="table table-hover">
+							<thead>
+								<tr>
+									<td>ユーザー名</td>
+									<td>ユーザー画像</td>
+									<th colspan="3"></th>
+								</tr>
+							</thead>
+
+							<% @user.followings.each do |fing| %>
+							<tbody>
+								<tr>
+									<th><%= fing.name %></th>
+									<td><%= link_to user_path(fing) do %>
+										<%= attachment_image_tag fing, :profile_image, size:"40x40", fallback: "no_iamge.jpg" %><% end %></td>
+									</tr>
+								</tbody>
+								<% end %>
+							</table>
+						</div>
+					</div>
+					<% if @user == current_user %>
+					<h2>gmap</h2>
+					<div id='map'></div>
+
+					<style>
+					#map{
+						height: 400px;
+					}
+				</style>
+
+				<script>
+
+					function initMap(){
+						let map = new google.maps.Map(document.getElementById('map'), {
+							center: {lat: gon.current_user.latitude, lng: gon.current_user.longitude},
+							zoom: 10
+						});
+					}
+
+				</script>
+				<script async defer
+        		src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=<%= ENV["GOOGLE_MAP_API_KEY"]%>&callback=initMap">
+				</script>
+
+				<% end %>
+			</div>
+			
+
+				<%= render 'users/footer' %>
+
+
+
